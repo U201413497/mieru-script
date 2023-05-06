@@ -67,7 +67,9 @@ _INSTALL(){
         }
     ],
     "\"activeProfile"\": "\"default"\",
-    "\"socks5Port"\": 1080
+    "\"socks5Port"\": 1080,
+    "\"httpProxyPort"\": 1081,
+    "\"httpProxyListenLAN"\": true
 }" > /root//client/client.json
     cp /root/mieru-script/start.bat /root/client
 	cp /root/mieru-script/stop.bat /root/client
