@@ -25,7 +25,6 @@ _INSTALL(){
 	wget --no-check-certificate https://raw.githubusercontent.com/U201413497/mieru-script/main/stop.bat
 	mkdir /root/client
 	unzip -d /root/client mieru_"$VERSION"_windows_amd64.zip
-	git clone https://github.com/U201413497/mieru-script.git
 	apt install ./mita_"$VERSION"_amd64.deb
 	touch server.json
 	touch /root/client/client.json
