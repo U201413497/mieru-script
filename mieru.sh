@@ -2,9 +2,9 @@
 
 _INSTALL(){
 	if [ -f /etc/centos-release ]; then
-		yum install -y sudo vim wget curl unzip git zip
+		yum install -y wget curl unzip zip
 	else
-		apt update && apt install -y sudo vim wget curl unzip git zip
+		apt update && apt install -y wget curl unzip zip
 	fi
 	wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
 	echo -n "Enter your Port:"
@@ -21,6 +21,8 @@ _INSTALL(){
 	IP=$(curl ifconfig.me)
 	wget -q "$DOWNLOADURL1"
 	wget -q "$DOWNLOADURL2"
+	wget --no-check-certificate https://raw.githubusercontent.com/U201413497/mieru-script/main/start.bat
+	wget --no-check-certificate https://raw.githubusercontent.com/U201413497/mieru-script/main/stop.bat
 	mkdir /root/client
 	unzip -d /root/client mieru_"$VERSION"_windows_amd64.zip
 	git clone https://github.com/U201413497/mieru-script.git
@@ -71,8 +73,8 @@ _INSTALL(){
              "\"httpProxyPort"\": 1081,
              "\"httpProxyListenLAN"\": true
 }" > /root//client/client.json
-    cp /root/mieru-script/start.bat /root/client
-    cp /root/mieru-script/stop.bat /root/client
+    cp /root/start.bat /root/client
+    cp /root/stop.bat /root/client
     zip -q -r client.zip /root/client
     mita apply config server.json
     mita start
