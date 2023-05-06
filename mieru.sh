@@ -73,7 +73,6 @@ _INSTALL(){
 }" > /root//client/client.json
     cp /root/mieru-script/start.bat /root/client
     cp /root/mieru-script/stop.bat /root/client
-    cp /root/mieru-script/SwitchyOmega.zip /root/client
     zip -q -r client.zip /root/client
     mita apply config server.json
     mita start
