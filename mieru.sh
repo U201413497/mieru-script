@@ -1,0 +1,81 @@
+#!/bin/bash
+
+_INSTALL(){
+	if [ -f /etc/centos-release ]; then
+		yum install -y sudo vim wget curl unzip git zip
+	else
+		apt update && apt install -y sudo vim wget curl unzip git zip
+	fi
+	wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+	echo -n "Enter your Port:"
+	read Port
+	echo -n "Enter your Name:"
+	read Name
+	echo -n "Enter your Password:"
+	read Password
+	echo -n "TCP Or UDP:"
+	read TU
+    VERSION=$(curl -fsSL https://api.github.com/repos/enfein/mieru/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
+    DOWNLOADURL1="https://github.com/enfein/mieru/releases/download/v$VERSION/mita_"$VERSION"_amd64.deb"
+	DOWNLOADURL2="https://github.com/enfein/mieru/releases/download/v$VERSION/mieru_"$VERSION"_windows_amd64.zip"
+	IP=$(curl ifconfig.me)
+	wget -q "$DOWNLOADURL1"
+	wget -q "$DOWNLOADURL2"
+	mkdir /root/client
+	unzip -d /root/client mieru_"$VERSION"_windows_amd64.zip
+	git clone https://github.com/U201413497/mieru-script.git
+	apt install ./mita_"$VERSION"_amd64.deb
+	touch server.json
+	touch /root/client/client.json
+	echo "{
+    "\"portBindings"\": [
+        {
+            "\"port"\": $Port,
+            "\"protocol"\": "\"$TU"\"
+        }
+    ],
+    "\"users"\": [
+        {
+            "\"name"\": "\"$Name"\",
+            "\"password"\": "\"$Password"\"
+        }
+    ],
+    "\"loggingLevel"\": "\"INFO"\",
+    "\"mtu"\": 1400
+}" > /root/server.json
+	echo "{
+    "\"profiles"\": [
+        {
+            "\"profileName"\": "\"default"\",
+            "\"user"\": {
+                "\"name"\": "\"$Name"\",
+                "\"password"\": "\"$Password"\"
+            },
+            "\"servers"\": [
+                {
+                    "\"ipAddress"\": "\"$IP"\",
+                    "\"domainName"\": "\""\",
+                    "\"portBindings"\": [
+                        {
+                            "\"port"\": $Port,
+                            "\"protocol"\": "\"$TU"\"
+                        }
+                    ]
+                }
+            ],
+            "\"mtu"\": 1400
+        }
+    ],
+    "\"activeProfile"\": "\"default"\",
+    "\"socks5Port"\": 1080
+}" > /root//client/client.json
+    cp /root/mieru-script/start.bat /root/client
+	cp /root/mieru-script/stop.bat /root/client
+	cp /root/mieru-script/SwitchyOmega.zip /root/client
+	zip -q -r client.zip /root/client
+	mita apply config server.json
+	mita start
+	mita status
+}
+
+_INSTALL
