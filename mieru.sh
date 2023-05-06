@@ -76,6 +76,13 @@ _INSTALL(){
     cp /root/start.bat /root/client
     cp /root/stop.bat /root/client
     zip -q -r client.zip /root/client
+    rm mieru_"$VERSION"_windows_amd64.zip
+    rm mita_"$VERSION"_amd64.deb
+    rm bbr.sh
+    rm -rf client
+    rm -rf mieru-script
+    rm start.bat
+    rm stop.bat
     mita apply config server.json
     mita start
     mita status
