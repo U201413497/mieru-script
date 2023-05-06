@@ -15,8 +15,8 @@ _INSTALL(){
 	read Password
 	echo -n "TCP Or UDP:"
 	read TU
-    VERSION=$(curl -fsSL https://api.github.com/repos/enfein/mieru/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
-    DOWNLOADURL1="https://github.com/enfein/mieru/releases/download/v$VERSION/mita_"$VERSION"_amd64.deb"
+        VERSION=$(curl -fsSL https://api.github.com/repos/enfein/mieru/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
+        DOWNLOADURL1="https://github.com/enfein/mieru/releases/download/v$VERSION/mita_"$VERSION"_amd64.deb"
 	DOWNLOADURL2="https://github.com/enfein/mieru/releases/download/v$VERSION/mieru_"$VERSION"_windows_amd64.zip"
 	IP=$(curl ifconfig.me)
 	wget -q "$DOWNLOADURL1"
@@ -28,29 +28,29 @@ _INSTALL(){
 	touch server.json
 	touch /root/client/client.json
 	echo "{
-    "\"portBindings"\": [
+            "\"portBindings"\": [
         {
             "\"port"\": $Port,
             "\"protocol"\": "\"$TU"\"
         }
-    ],
-    "\"users"\": [
+                                ],
+            "\"users"\": [
         {
             "\"name"\": "\"$Name"\",
             "\"password"\": "\"$Password"\"
         }
-    ],
-    "\"loggingLevel"\": "\"INFO"\",
-    "\"mtu"\": 1400
+                         ],
+            "\"loggingLevel"\": "\"INFO"\",
+            "\"mtu"\": 1400
 }" > /root/server.json
 	echo "{
-    "\"profiles"\": [
+            "\"profiles"\": [
         {
             "\"profileName"\": "\"default"\",
             "\"user"\": {
                 "\"name"\": "\"$Name"\",
                 "\"password"\": "\"$Password"\"
-            },
+                        },
             "\"servers"\": [
                 {
                     "\"ipAddress"\": "\"$IP"\",
@@ -60,24 +60,24 @@ _INSTALL(){
                             "\"port"\": $Port,
                             "\"protocol"\": "\"$TU"\"
                         }
-                    ]
-                }
-            ],
-            "\"mtu"\": 1400
+                                        ]
+                 }
+                           ],
+             "\"mtu"\": 1400
         }
-    ],
-    "\"activeProfile"\": "\"default"\",
-    "\"socks5Port"\": 1080,
-    "\"httpProxyPort"\": 1081,
-    "\"httpProxyListenLAN"\": true
+                        ],
+             "\"activeProfile"\": "\"default"\",
+             "\"socks5Port"\": 1080,
+             "\"httpProxyPort"\": 1081,
+             "\"httpProxyListenLAN"\": true
 }" > /root//client/client.json
     cp /root/mieru-script/start.bat /root/client
-	cp /root/mieru-script/stop.bat /root/client
-	cp /root/mieru-script/SwitchyOmega.zip /root/client
-	zip -q -r client.zip /root/client
-	mita apply config server.json
-	mita start
-	mita status
+    cp /root/mieru-script/stop.bat /root/client
+    cp /root/mieru-script/SwitchyOmega.zip /root/client
+    zip -q -r client.zip /root/client
+    mita apply config server.json
+    mita start
+    mita status
 }
 
 _INSTALL
